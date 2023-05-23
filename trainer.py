@@ -82,19 +82,24 @@ def _get_stdin_selector():
 
 
 def _non_blocking_input():
-    global _command
-    l = [""]
-    if is_global_leader():
-        s = ""
-        selector = _get_stdin_selector()
-        events = selector.select(timeout=0)
-        for key, _ in events:
-            s: str = key.fileobj.readline().strip()
-            _logger.info(f'Get stdin "{s}".')
-        l[0] = s
-    broadcast_object_list(l, src=0)
-    _command = l[0]
-    print(type(_command), _command)
+    # global _command
+    # l = [""]
+    # if is_global_leader():
+    #     s = ""
+    #     selector = _get_stdin_selector()
+    #     events = selector.select(timeout=0)
+    #     for key, _ in events:
+    #         s: str = key.fileobj.readline().strip()
+    #         _logger.info(f'Get stdin "{s}".')
+    #     l[0] = s
+    # broadcast_object_list(l, src=0)
+    # _command = l[0]
+    # print(type(_command), _command)
+
+    """
+    deprecated because doesn't work on slurm - sbatch
+    """
+    _command = " "
     return _command
 
 
