@@ -81,20 +81,21 @@ def _get_stdin_selector():
     return selector
 
 
-# def _non_blocking_input():
-#     global _command
-#     l = [""]
-#     if is_global_leader():
-#         s = ""
-#         selector = _get_stdin_selector()
-#         events = selector.select(timeout=0)
-#         for key, _ in events:
-#             s: str = key.fileobj.readline().strip()
-#             _logger.info(f'Get stdin "{s}".')
-#         l[0] = s
-#     broadcast_object_list(l, src=0)
-#     _command = l[0]
-#     return _command
+def _non_blocking_input():
+    global _command
+    l = [""]
+    if is_global_leader():
+        s = ""
+        selector = _get_stdin_selector()
+        events = selector.select(timeout=0)
+        for key, _ in events:
+            s: str = key.fileobj.readline().strip()
+            _logger.info(f'Get stdin "{s}".')
+        l[0] = s
+    broadcast_object_list(l, src=0)
+    _command = l[0]
+    print(type(_command), _command)
+    return _command
 
 
 def _make_infinite_epochs(dl):
@@ -138,7 +139,7 @@ def train(
     eval_fn = global_leader_only(eval_fn)
 
     # Pre-loop command
-    command = None  # _non_blocking_input()
+    command = _non_blocking_input()
     if command in ["eval", "eval_quit"]:
         engines.eval()
         eval_fn(engines=engines)
@@ -156,7 +157,7 @@ def train(
         elapsed_time = stats.get("elapsed_time", 0)
         logger(data=stats)
 
-        command = None  # _non_blocking_input()
+        command = _non_blocking_input()
 
         if "@" in command:
             what, when = command.split("@")
