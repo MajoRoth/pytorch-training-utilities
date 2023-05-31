@@ -159,6 +159,9 @@ def train(
 
         batch = to_device(batch, torch.cuda.current_device())
         stats = engines.step(feeder=train_feeder, batch=batch)
+        print(f"stats: {stats}")
+        print(f"stats type: {type(stats)}")
+        print(f"stats keys: {stats.keys()}")
         elapsed_time = stats.get("elapsed_time", 0)
         logger(data=stats)
 
