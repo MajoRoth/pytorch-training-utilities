@@ -155,7 +155,7 @@ def train(
     if command in ["quit", "eval_quit"]:
         return
 
-    _writer = SummaryWriter(log_dir=f"/runs/{cfg.cfg_name}")
+    _writer = SummaryWriter(log_dir=f"runs/{cfg.cfg_name}")
 
     # Training loop
     for batch in _make_infinite_epochs(train_dl):
