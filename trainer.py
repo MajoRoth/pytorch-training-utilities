@@ -210,14 +210,14 @@ def train(
             if cfg.save_on_quit:
                 saving_commands.append("quit")
 
-            if engines.global_step % save_ckpt_every == 0 or command in saving_commands or engines.global_step == 100:
+            if engines.global_step % save_ckpt_every == 0 or command in saving_commands:
                 # TODO last condition is for debugging, remove it later
                 engines.save_checkpoint()
                 try:
                     from vall_e.export import main as main_export
                     from vall_e.__main__ import main as main_test
-                    main_export(path="ckpts/saspeech/ar/model/default/mp_rank_00_model_states.pt")
-                    main_export(path="ckpts/saspeech/nar/model/default/mp_rank_00_model_states.pt")
+                    # main_export(path="ckpts/saspeech/ar/model/default/mp_rank_00_model_states.pt")
+                    # main_export(path="ckpts/saspeech/nar/model/default/mp_rank_00_model_states.pt")
 
                     sentence = "היי, זה משפט לדוגמא כדי שאני אשמע עם המודל מדבר טוב"
                     ckpt_num = engines.global_step // save_ckpt_every
