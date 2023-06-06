@@ -11,6 +11,7 @@ import numpy as np
 import torch
 from torch.distributed import broadcast_object_list
 from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
 
 from .config import Config
 from .distributed import (
@@ -26,6 +27,7 @@ from .utils import to_device
 _logger = logging.getLogger(__name__)
 _engines: Engines
 _command: str
+_writer = SummaryWriter()
 
 
 def get_global_step():
@@ -159,9 +161,8 @@ def train(
 
         batch = to_device(batch, torch.cuda.current_device())
         stats = engines.step(feeder=train_feeder, batch=batch)
-        print(f"stats: {stats}")
-        print(f"stats type: {type(stats)}")
-        print(f"stats keys: {stats.keys()}")
+        _writer.add_scalar("Loss/train", stats["model.loss"], stats["global_step"])
+        _writer.flush()
         elapsed_time = stats.get("elapsed_time", 0)
         logger(data=stats)
 
@@ -216,3 +217,5 @@ def train(
 
             if command in ["quit"]:
                 return
+
+    _writer.flush()
