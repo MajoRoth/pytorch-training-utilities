@@ -208,7 +208,7 @@ def train(
             if cfg.save_on_quit:
                 saving_commands.append("quit")
 
-            if engines.global_step % save_ckpt_every == 0 or command in saving_commands or engines.global_step == 100:
+            if engines.global_step % save_ckpt_every == 0 or command in saving_commands:
                 # TODO last condition is for debugging, remove it later
                 engines.save_checkpoint()
                 try:
