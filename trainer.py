@@ -236,12 +236,9 @@ def train(
                                         send wav to _writer here
                                     """
 
-
-
                 except Exception as e:
                     _logger.error(str(e))
                     _logger.critical("export ar or nar FAILED")
-
 
 
             if engines.global_step % cfg.eval_every == 0 or command in ["eval"]:
