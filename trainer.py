@@ -28,7 +28,7 @@ from .utils import to_device
 _logger = logging.getLogger(__name__)
 _engines: Engines
 _command: str
-_writer = SummaryWriter()
+_writer = None
 
 
 def get_global_step():
@@ -155,6 +155,8 @@ def train(
     if command in ["quit", "eval_quit"]:
         return
 
+    _writer = SummaryWriter(log_dir=f"/runs/{cfg.cfg_name}")
+
     # Training loop
     for batch in _make_infinite_epochs(train_dl):
         if engines.global_step >= cfg.max_iter:
@@ -208,7 +210,7 @@ def train(
             if cfg.save_on_quit:
                 saving_commands.append("quit")
 
-            if engines.global_step % save_ckpt_every == 0 or command in saving_commands:
+            if engines.global_step % save_ckpt_every == 0 or command in saving_commands or engines.global_step == 100:
                 # TODO last condition is for debugging, remove it later
                 engines.save_checkpoint()
                 try:
