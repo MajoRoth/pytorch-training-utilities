@@ -157,7 +157,7 @@ def train(
         return
 
     now = datetime.now()
-    FORMAT = "%d/%m/%Y-%H:%M"
+    FORMAT = "%d-%m-%Y-%H:%M"
     _writer = SummaryWriter(log_dir=f"runs/{cfg.cfg_name}_{now.strftime(FORMAT)}")
 
     # Training loop
