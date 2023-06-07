@@ -232,13 +232,19 @@ def train(
 
                     main_test(text=sentence,
                          reference="/cs/labs/adiyoss/amitroth/vall-e/data/reference/saspeech/reference.wav",
-                         out_path=f"/cs/labs/adiyoss/amitroth/vall-e/output/saspeech/test_{ckpt_num}.wav",
+                         out_path=f"/cs/labs/adiyoss/amitroth/vall-e/output/saspeech/test_{cfg.cfg_name}_{engines.global_step}.wav",
                          ar_ckpt="/cs/labs/adiyoss/amitroth/vall-e/zoo/ar.py",
                          nar_ckpt="/cs/labs/adiyoss/amitroth/vall-e/zoo/nar.py",
                          device="cuda")
 
-                    wav, sr = torchaudio.load(f"/cs/labs/adiyoss/amitroth/vall-e/output/saspeech/test_{ckpt_num}.wav")
-                    _writer.add_audio(tag=f"test_{ckpt_num}.wav", snd_tensor=wav, sample_rate=sr, global_step=engines.global_step)
+                    print("-------------------------")
+
+                    print("Saved wav file in /cs/labs/adiyoss/amitroth/vall-e/output/saspeech/test_{ckpt_num}.wav")
+
+                    wav, sr = torchaudio.load(f"/cs/labs/adiyoss/amitroth/vall-e/output/saspeech/test_{cfg.cfg_name}_{engines.global_step}.wav")
+                    _writer.add_audio(tag=f"/cs/labs/adiyoss/amitroth/vall-e/output/saspeech/test_{cfg.cfg_name}_{engines.global_step}.wav", snd_tensor=wav, sample_rate=sr, global_step=engines.global_step)
+
+                    print("SENT TO WRITER")
 
                     """
                         send wav to _writer here
