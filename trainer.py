@@ -213,31 +213,36 @@ def train(
             if cfg.save_on_quit:
                 saving_commands.append("quit")
 
-            if engines.global_step % save_ckpt_every == 0 or command in saving_commands:
+            if engines.global_step % save_ckpt_every == 0 or command in saving_commands or engines.global_step == 100:
                 # TODO last condition is for debugging, remove it later
+
+                print(" --- 100 DEBUG ---")
                 engines.save_checkpoint()
                 try:
                     from vall_e.export import main as main_export
                     from vall_e.__main__ import main as main_test
-                    # main_export(path="zoo/ar.pt")
-                    # main_export(path="zoo/nar.pt")
 
-                    sentence = "היי, זה משפט לדוגמא כדי שאני אשמע עם המודל מדבר טוב"
+                    """
+                        Can only export the current model ckpt due to config file...
+                    """
+                    main_export(path=f"/cs/labs/adiyoss/amitroth/vall-e/zoo/{cfg.cfg_name}.pt")
+
+                    sentence = "היי, זה משפט לדוגמא כדי שאני אשמע אם המודל מדבר טוב"
                     ckpt_num = engines.global_step // save_ckpt_every
 
                     main_test(text=sentence,
                          reference="/cs/labs/adiyoss/amitroth/vall-e/data/reference/saspeech/reference.wav",
                          out_path=f"/cs/labs/adiyoss/amitroth/vall-e/output/saspeech/test_{ckpt_num}.wav",
-                         ar_ckpt="/cs/labs/adiyoss/amitroth/vall-e/ckpts/saspeech/ar/model/default/mp_rank_00_model_states.pt",
-                         nar_ckpt="/cs/labs/adiyoss/amitroth/vall-e/ckpts/saspeech/nar/model/default/mp_rank_00_model_states.pt",
+                         ar_ckpt="/cs/labs/adiyoss/amitroth/vall-e/zoo/ar.py",
+                         nar_ckpt="/cs/labs/adiyoss/amitroth/vall-e/zoo/nar.py",
                          device="cuda")
 
                     wav, sr = torchaudio.load(f"/cs/labs/adiyoss/amitroth/vall-e/output/saspeech/test_{ckpt_num}.wav")
                     _writer.add_audio(tag=f"test_{ckpt_num}.wav", snd_tensor=wav, sample_rate=sr, global_step=engines.global_step)
 
                     """
-                                        send wav to _writer here
-                                    """
+                        send wav to _writer here
+                    """
 
                 except Exception as e:
                     _logger.error(str(e))
