@@ -233,8 +233,8 @@ def train(
                     main_test(text=sentence,
                          reference="/cs/labs/adiyoss/amitroth/vall-e/data/reference/saspeech/reference.wav",
                          out_path=f"/cs/labs/adiyoss/amitroth/vall-e/output/saspeech/test_{cfg.cfg_name}_{engines.global_step}.wav",
-                         ar_ckpt="/cs/labs/adiyoss/amitroth/vall-e/zoo/saspeech/ar.py",
-                         nar_ckpt="/cs/labs/adiyoss/amitroth/vall-e/zoo/saspeech/nar.py",
+                         ar_ckpt="/cs/labs/adiyoss/amitroth/vall-e/zoo/saspeech/ar.pt",
+                         nar_ckpt="/cs/labs/adiyoss/amitroth/vall-e/zoo/saspeech/nar.pt",
                          device="cuda")
 
                     print("-------------------------")
