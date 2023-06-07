@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import logging
 import random
@@ -155,7 +156,9 @@ def train(
     if command in ["quit", "eval_quit"]:
         return
 
-    _writer = SummaryWriter(log_dir=f"runs/{cfg.cfg_name}")
+    now = datetime.now()
+    FORMAT = "%d/%m/%Y-%H:%M"
+    _writer = SummaryWriter(log_dir=f"runs/{cfg.cfg_name}_{now.strftime(FORMAT)}")
 
     # Training loop
     for batch in _make_infinite_epochs(train_dl):
@@ -216,8 +219,8 @@ def train(
                 try:
                     from vall_e.export import main as main_export
                     from vall_e.__main__ import main as main_test
-                    # main_export(path="ckpts/saspeech/ar/model/default/mp_rank_00_model_states.pt")
-                    # main_export(path="ckpts/saspeech/nar/model/default/mp_rank_00_model_states.pt")
+                    # main_export(path="zoo/ar.pt")
+                    # main_export(path="zoo/nar.pt")
 
                     sentence = "היי, זה משפט לדוגמא כדי שאני אשמע עם המודל מדבר טוב"
                     ckpt_num = engines.global_step // save_ckpt_every
