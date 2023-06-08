@@ -218,36 +218,7 @@ def train(
 
                 print(" --- 100 DEBUG ---")
                 ckpt_num = engines.global_step // save_ckpt_every
-                engines.save_checkpoint(tag=f"ckpt_{ckpt_num}")
-                # try:
-                #     from vall_e.export import main as main_export
-                #     from vall_e.__main__ import main as main_test
-                #
-                #     """
-                #         Can only export the current model ckpt due to config file...
-                #     """
-                #     main_export(path=f"/cs/labs/adiyoss/amitroth/vall-e/zoo/{cfg.cfg_name}.pt")
-                #
-                #     sentence = "היי, זה משפט לדוגמא כדי שאני אשמע אם המודל מדבר טוב"
-                #
-                #
-                #     main_test(text=sentence,
-                #          reference="/cs/labs/adiyoss/amitroth/vall-e/data/reference/saspeech/reference.wav",
-                #          out_path=f"/cs/labs/adiyoss/amitroth/vall-e/output/saspeech/test_{cfg.cfg_name}_{engines.global_step}.wav",
-                #          ar_ckpt="/cs/labs/adiyoss/amitroth/vall-e/zoo/saspeech/ar.pt",
-                #          nar_ckpt="/cs/labs/adiyoss/amitroth/vall-e/zoo/saspeech/nar.pt",
-                #          device="cuda")
-                #
-                #     print("-------------------------")
-                #
-                #     print(f"Saved wav file in /cs/labs/adiyoss/amitroth/vall-e/output/saspeech/test_{ckpt_num}.wav")
-                #
-                #     wav, sr = torchaudio.load(f"/cs/labs/adiyoss/amitroth/vall-e/output/saspeech/test_{cfg.cfg_name}_{engines.global_step}.wav")
-                #     _writer.add_audio(tag=f"/cs/labs/adiyoss/amitroth/vall-e/output/saspeech/test_{cfg.cfg_name}_{engines.global_step}.wav", snd_tensor=wav, sample_rate=sr, global_step=engines.global_step)
-                #
-                #     print("SENT TO WRITER")
-                #
-
+                engines.save_checkpoint(tag=f"ckpt_{engines.global_step}")
 
 
             if engines.global_step % cfg.eval_every == 0 or command in ["eval"]:
