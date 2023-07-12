@@ -134,7 +134,6 @@ def train(
 ):
     print("ENTERED TRAIN")
     engines = engines_loader()
-    print("LOADED ENGINES")
 
     cfg = engines.cfg
 
