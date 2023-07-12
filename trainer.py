@@ -132,7 +132,10 @@ def train(
     eval_fn: EvalFn,
     logger: Logger = logger,
 ):
+    print("ENTERED TRAIN")
     engines = engines_loader()
+    print("LOADED ENGINES")
+
     cfg = engines.cfg
 
     if is_local_leader():
@@ -159,6 +162,8 @@ def train(
     now = datetime.now()
     FORMAT = "%d-%m-%Y-%H:%M"
     _writer = SummaryWriter(log_dir=f"runs/{cfg.cfg_name}_{now.strftime(FORMAT)}")
+
+    print("STARTING EPOCHS\n\n")
 
     # Training loop
     for batch in _make_infinite_epochs(train_dl):
