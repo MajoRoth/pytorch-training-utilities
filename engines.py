@@ -175,6 +175,9 @@ class Engines(dict[str, Engine]):
 
             if oom:
                 self.save_checkpoint()
+                print(batch)
+                print(len(batch))
+                print(batch.shape)
                 raise RuntimeError("Out of memory!")
 
         self._update_global_step()
